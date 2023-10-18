@@ -64,11 +64,12 @@ class Play extends Phaser.Scene{
         this.gameOver = false;
 
         scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(60 * 1000, () => {
+        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
                 this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
                 this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5);
                 this.gameOver = true;
         }, null, this);
+
     }
 
     update() {
@@ -81,7 +82,7 @@ class Play extends Phaser.Scene{
         }
 
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)){
-            this.scene.restart();
+            this.scene.start('menuScene');
         }
 
         // check collisions
@@ -120,5 +121,6 @@ class Play extends Phaser.Scene{
         })
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
+        this.sound.play('sfx_explosion');
       }
 }
